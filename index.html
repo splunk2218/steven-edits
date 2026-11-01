@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>*{box-sizing:border-box}body{margin:0}img,video{max-width:100%}</style>
+<title>Steven Edits</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Layout: one narrow column, a quiet intro, then three edits in a reel, then contact. */
+:root{
+  /* Always dark, whatever the viewer's setting */
+  --bg:#121315; --surface:#1b1c1f; --fg:#ecebe6; --muted:#9a9ca1; --line:#2b2d31; --accent:#e2794c;
+  --display:"Fraunces",Georgia,serif; --body:"Manrope",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  color-scheme:dark;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;position:relative}
+/* Soft colour glows, like light leaking onto a film strip */
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(60% 45% at 85% 5%, color-mix(in srgb,var(--accent) 28%,transparent), transparent 70%),
+    radial-gradient(50% 40% at 5% 60%, color-mix(in srgb,#3b6fd8 22%,transparent), transparent 70%),
+    radial-gradient(45% 35% at 70% 100%, color-mix(in srgb,#9b4fd1 18%,transparent), transparent 70%),
+    var(--bg)}
+/* Faint film grain on top */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.08;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+main{position:relative;z-index:1}
+/* Desktop sides: floating outlines of every video shape, one per platform */
+.strip{display:none}
+@media (min-width:1200px){
+  .strip{display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;position:fixed;top:0;bottom:0;z-index:0;pointer-events:none;perspective:900px;
+    width:calc((100vw - 880px)/2);left:0}
+  .strip.right{left:auto;right:0}
+  .shape{position:relative;border:1.5px solid color-mix(in srgb,var(--fg) 30%,transparent);border-radius:8px;
+    background:linear-gradient(145deg,color-mix(in srgb,var(--fg) 6%,transparent),color-mix(in srgb,var(--fg) 1%,transparent));
+    box-shadow:0 24px 50px rgba(0,0,0,.45),inset 0 1px 0 color-mix(in srgb,var(--fg) 12%,transparent);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    display:flex;align-items:flex-end;padding:10px;
+    animation:float 9s ease-in-out infinite;--ry:22deg}
+  .strip.right .shape{--ry:-22deg}
+  .shape:nth-child(2){animation-delay:-4.5s}
+  .shape b{position:absolute;top:10px;left:10px;font:500 11px/1 var(--mono);color:var(--accent);letter-spacing:.06em}
+  .shape span{font:11px/1.3 var(--mono);color:var(--muted);letter-spacing:.04em}
+  .shape::after{content:"";position:absolute;inset:50% auto auto 50%;width:0;height:0;transform:translate(-30%,-50%);
+    border-left:14px solid color-mix(in srgb,var(--fg) 35%,transparent);border-top:9px solid transparent;border-bottom:9px solid transparent}
+  .r169{width:min(190px,calc((100vw - 880px)/2 - 48px));aspect-ratio:16/9}
+  .r11{width:min(120px,calc((100vw - 880px)/2 - 48px));aspect-ratio:1}
+  .r916{width:min(110px,calc((100vw - 880px)/2 - 48px));aspect-ratio:9/16}
+  .r45{width:min(130px,calc((100vw - 880px)/2 - 48px));aspect-ratio:4/5}
+}
+@keyframes float{
+  0%,100%{transform:rotateY(var(--ry)) rotateX(6deg) translateY(0)}
+  50%{transform:rotateY(calc(var(--ry) * .6)) rotateX(-4deg) translateY(-16px)}}
+@media (prefers-reduced-motion:reduce){.shape{animation:none!important;transform:rotateY(var(--ry))}}
+.wrap{max-width:880px;margin:0 auto;padding-block:64px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:72px}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(40px,7vw,64px);line-height:1.05;margin:12px 0 20px;text-wrap:balance}
+h1 em{font-style:italic;color:var(--accent)}
+h2{font-family:var(--display);font-weight:500;font-size:28px;margin:0;text-wrap:balance}
+p{margin:0;max-width:60ch}
+.lead{font-size:18px;color:var(--muted)}
+.reel{display:flex;flex-direction:column;gap:40px}
+.row{display:flex;flex-direction:column;gap:14px;min-width:0}
+.row-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:2px solid var(--accent)}
+.row-title{font-weight:600;color:var(--accent)}
+.row-nav{display:flex;align-items:center;gap:8px}
+.row-nav span{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.row-nav button{width:44px;height:44px;padding:0;background:var(--accent);color:#fff;border:0;border-radius:50%;font-size:20px}
+.row-nav button:disabled{background:var(--surface);color:var(--muted);opacity:.6;cursor:default}
+.track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;min-width:0}
+.track::-webkit-scrollbar{display:none}
+/* Each slide is short of full width, so the next one peeks in from the side */
+.track .edit{flex:0 0 88%;scroll-snap-align:start;grid-template-columns:1fr;gap:14px;align-items:start}
+.dots{display:flex;justify-content:center;gap:4px}
+.dots button{width:28px;height:28px;padding:0;background:none;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.dots button::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots button[aria-current="true"]::after{background:var(--accent)}
+.edit{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:center}
+.edit>*{min-width:0}
+.frame{aspect-ratio:16/9;max-width:100%;border-radius:6px;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--fg);position:relative;overflow:hidden}
+.frame.vertical{aspect-ratio:9/16;max-height:520px;justify-self:center}
+video.frame{width:100%;background:#000;object-fit:contain}
+video.frame.vertical{width:auto;height:520px;max-height:80vh}
+.play{width:56px;height:56px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.play::after{content:"";border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+a.frame:hover .play,a.frame:focus-visible .play{transform:scale(1.08)}
+a.frame:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.soon{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.tc{position:absolute;left:12px;bottom:10px;font-family:var(--mono);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.info{display:flex;flex-direction:column;gap:10px}
+.info p{color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:2px 10px;color:var(--muted)}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;border-top:1px solid var(--line);padding-top:28px}
+.how div{display:flex;flex-direction:column;gap:6px}
+.how b{font-weight:600}
+.how p{color:var(--muted);font-size:15px}
+.contact{display:flex;flex-direction:column;gap:14px}
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.mail code{font-family:var(--mono);font-size:15px;user-select:all}
+button{font:600 14px var(--body);background:var(--fg);color:var(--bg);border:0;border-radius:6px;padding:8px 14px;cursor:pointer}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:640px){.edit,.how{grid-template-columns:1fr}.wrap{gap:56px;padding-block:40px 56px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="strip left" aria-hidden="true">
+  <div class="shape r169"><b>16:9</b><span>YouTube</span></div>
+  <div class="shape r11"><b>1:1</b><span>Instagram</span></div>
+</div>
+<div class="strip right" aria-hidden="true">
+  <div class="shape r916"><b>9:16</b><span>TikTok<br>Reels<br>Shorts</span></div>
+  <div class="shape r45"><b>4:5</b><span>Feed</span></div>
+</div>
+<main class="wrap">
+  <header>
+    <div class="label">Video editor · DaVinci Resolve</div>
+    <h1>Edits that keep people <em>watching.</em></h1>
+    <p class="lead">I'm Steven. I edit for any creator and any style. The edits below show the range, from vlogs to client work to fast fan edits. Tell me how your channel feels, and I'll match it.</p>
+  </header>
+
+  <section class="row" id="featured" aria-label="Start here">
+    <div class="label">Start here</div>
+  </section>
+
+  <section class="reel" id="reel" aria-label="Edits"></section>
+  <p class="label" style="margin-top:-48px">Clips shown are compressed for web. My best edits are pinned at the top of my TikTok: <a href="https://www.tiktok.com/@splunkedits" target="_blank" rel="noopener" style="color:var(--accent)">@splunkedits</a></p>
+
+  <section class="contact">
+    <div class="label">What I edit</div>
+    <div class="tags">
+      <span>Vlogs</span><span>Shorts and Reels</span><span>TikToks</span><span>Tutorials</span><span>Podcasts</span><span>Gaming</span><span>Fitness</span><span>Business and talking head</span><span>Travel</span><span>Music and cinematic</span>
+    </div>
+  </section>
+
+  <section class="how">
+    <div><b>Pacing first</b><p>Dead air goes. The story stays. Every cut has a reason.</p></div>
+    <div><b>Colour and sound</b><p>A consistent grade and clean audio, so it feels like one video.</p></div>
+    <div><b>Fast turnaround</b><p>Clear notes, quick revisions, and files sent on the day I said.</p></div>
+  </section>
+
+  <section class="contact">
+    <div class="label">Work with me</div>
+    <h2>Send me your raw footage. I'll send back a video.</h2>
+    <div class="mail">
+      <code id="email">steveneditingstudio@gmail.com</code>
+      <button id="copy" type="button">Copy email</button>
+    </div>
+  </section>
+</main>
+
+<script>
+// Each "src" is a video file published next to this page.
+const EDITS = [
+  {title:"Cinematic lifestyle", kind:"Cinematic", length:"2 min 26 sec", shape:"wide", src:"videos/cinematic.mp4",
+   text:"A day at home and out the door, told through clean cuts and changing angles. Real room sound, no filler.",
+   tags:["Cinematic","Clean cuts","Multiple angles","Natural sound"]},
+  {title:"House tour vlog intro", kind:"Vlog intro", length:"10 sec", shape:"wide", src:"videos/vlog-intro.mp4",
+   text:"The title “vlog” builds on screen with an inverted-colour underline, then the fonts flicker fast to grab attention before the tour starts.",
+   tags:["Animated titles","Invert effect","Hook"]},
+  {title:"Spider-Man edit", kind:"Fan edit", length:"18 sec", shape:"wide", src:"videos/spiderman.mp4",
+   text:"Fast, flashy and cut to the beat. Built to stop the scroll.",
+   tags:["Beat sync","Transitions","Effects"]},
+  {title:"Brez Scales edit", kind:"Fan edit", length:"17 sec", shape:"wide", src:"videos/brez-scales.mp4",
+   text:"A high-energy edit with quick cuts and flash effects timed to the music.",
+   tags:["Beat sync","Flash effects","Pacing"]},
+  {title:"Tutorial intro for a client", kind:"Client work", length:"17 sec", shape:"wide", src:"videos/tutorial-intro.mp4",
+   text:"Real client work. Dead air cut out, a Meta logo slides in, and a blurred “later in this video” teaser keeps viewers watching.",
+   tags:["Client","Tight cuts","Teaser"]},
+  {title:"Gym vlog intro", kind:"Vlog intro", length:"33 sec", shape:"wide", src:"videos/gym-intro.mp4",
+   text:"The “gym vlog” title rises up and slips behind the creator, so the text sits inside the shot.",
+   tags:["Text behind subject","Masking","Titles"]},
+  {title:"Movie time-lapse", kind:"Time-lapse", length:"12 sec", shape:"wide", src:"videos/time-lapse.mp4",
+   text:"A movie night sped up into seconds, with chill music underneath and a countdown timer on screen.",
+   tags:["Time-lapse","Countdown timer","Music"]}
+];
+const reel = document.getElementById("reel");
+// Each row is one carousel. "items" are positions in EDITS.
+const ROWS = [
+  {name:"Intros", items:[1,4]},
+  {name:"Lifestyle", items:[0,6]},
+  {name:"Fan edits", items:[2,3]}
+];
+const makeEdit = (e, parent) => {
+  const el = document.createElement("article");
+  el.className = "edit";
+  const frame = `<video class="frame ${e.shape==="vertical"?"vertical":""}" src="${e.src}" poster="${e.src.replace("videos/","posters/").replace(".mp4",".jpg")}" controls playsinline preload="metadata" aria-label="${e.title}"></video>`;
+  el.innerHTML = `${frame}<div class="info"><div class="label">${e.kind} · ${e.length}</div><h2>${e.title}</h2><p>${e.text}</p><div class="tags">${e.tags.map(t=>`<span>${t}</span>`).join("")}</div></div>`;
+  parent.appendChild(el);
+};
+// The gym vlog intro sits on its own at the top, so it's the first thing people see.
+makeEdit(EDITS[5], document.getElementById("featured"));
+ROWS.forEach(row => {
+  const box = document.createElement("section");
+  box.className = "row";
+  box.setAttribute("aria-label", row.name);
+  box.innerHTML = `<div class="row-top"><h2 class="row-title">${row.name}</h2><div class="row-nav"><span></span><button type="button" aria-label="Previous edit">←</button><button type="button" aria-label="Next edit">→</button></div></div><div class="track"></div><div class="dots"></div>`;
+  const track = box.querySelector(".track");
+  const count = box.querySelector(".row-nav span");
+  const [prev, next] = box.querySelectorAll(".row-nav button");
+  const dots = box.querySelector(".dots");
+  row.items.forEach(i => makeEdit(EDITS[i], track));
+  const step = () => track.children[1].offsetLeft - track.children[0].offsetLeft;
+  const current = () => {
+    if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 2) return row.items.length - 1;
+    return step() ? Math.round(track.scrollLeft / step()) : 0;
+  };
+  const show = () => {
+    const at = current();
+    count.textContent = `${at + 1} of ${row.items.length} · swipe`;
+    prev.disabled = at === 0;
+    next.disabled = at === row.items.length - 1;
+    [...dots.children].forEach((d, i) => d.setAttribute("aria-current", i === at));
+  };
+  row.items.forEach((_, i) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.setAttribute("aria-label", `Go to edit ${i + 1}`);
+    dot.addEventListener("click", () => go(i));
+    dots.appendChild(dot);
+  });
+  const go = to => {
+    track.querySelectorAll("video").forEach(v => v.pause());
+    track.scrollTo({left: to * step(), behavior: "smooth"});
+  };
+  prev.addEventListener("click", () => go(current() - 1));
+  next.addEventListener("click", () => go(current() + 1));
+  track.addEventListener("scroll", show);
+  reel.appendChild(box);
+  show();
+});
+document.getElementById("copy").addEventListener("click", async ev => {
+  const btn = ev.currentTarget;
+  try { await navigator.clipboard.writeText(document.getElementById("email").textContent); btn.textContent = "Copied"; }
+  catch { getSelection().selectAllChildren(document.getElementById("email")); btn.textContent = "Selected — press Ctrl+C"; }
+  setTimeout(() => btn.textContent = "Copy email", 2000);
+});
+</script>
+
+</html>
